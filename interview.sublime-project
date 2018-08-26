@@ -1,0 +1,21 @@
+{
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				"yarn.lock",
+				"interview.sublime-project",
+				"*.css"
+			],
+			"folder_exclude_patterns":
+			[
+				".git",
+				"node_modules",
+				"build",
+				"public",
+			],
+			"path": "/Users/kleberpinel/Workspace/interviews/skeleton/frontend"
+		}
+	]
+}
