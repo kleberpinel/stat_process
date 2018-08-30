@@ -43,15 +43,21 @@ Take a look on how to run
 - Instal yarn
 
 On frontend folder run:
+
 $ yarn instal
+
 $ yarn start
 
 In another tab on terminal, go to backend project and run:
+
 $ redis-server
 
 In another tab, run:
+
 $ bundle install
+
 $ rails s -p 5000
 
 In another tab, run:
+
 $ sidekiq
