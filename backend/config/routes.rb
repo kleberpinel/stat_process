@@ -3,5 +3,6 @@ Rails.application.routes.draw do
 
   resources :csv_importer
 
-  get 'search_engine/infos'         => 'search_engine#infos'
+  get 'search_engine/infos'              => 'search_engine#infos'
+  get 'search_engine/daily_rank_summary' => 'search_engine#daily_rank_summary'
 end

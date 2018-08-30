@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react'
 import PropTypes                from 'prop-types'
 
-import RankImporter        from '../searchEngineRank/rankImporterContainer'
+import RankImporter             from '../searchEngineRank/rankImporterContainer'
+import DailyRankSummary         from '../searchEngineRank/dailySummary/dailyRankSummaryContainer'
 
 import './landing.css'
 
@@ -12,33 +13,38 @@ class Home extends PureComponent {
   }
 
   renderSearchEngineRankProcessInfo = () => {
-    const { rankProcesInfos } =  this.props
-    if (rankProcesInfos) {
+    const { rankProcessInfos } =  this.props
+    if (rankProcessInfos) {
       return (
         <div>
-          <label>CSV files processed:</label><span> {rankProcesInfos.rank_csv_files_processed}</span><br/>
-          <label>Ranks processed:</label><span> {rankProcesInfos.rank_processed}</span>
+          <label>CSV files processed:</label>
+          <span> {rankProcessInfos.rank_csv_files_processed}</span><br/>
+          <label>Ranks processed:</label><span> {rankProcessInfos.rank_processed}</span>
         </div>
       )
     }
   }
 
   render() {
+    const { rankProcessInfos } =  this.props
     return (
       <div>
         <h1>STAT - Rank Page</h1>
-
         { this.renderSearchEngineRankProcessInfo() }
 
-        <RankImporter />
+        <RankImporter
+          rankProcessInfos={rankProcessInfos}
+        />
+
+        <DailyRankSummary />
       </div>
     )
   }
 }
 
 Home.propTypes = {
-  rankProcesInfos: PropTypes.object,
-  loadRankInfos: PropTypes.func.required
+  rankProcessInfos: PropTypes.object,
+  loadRankInfos: PropTypes.func
 }
 
 export default Home

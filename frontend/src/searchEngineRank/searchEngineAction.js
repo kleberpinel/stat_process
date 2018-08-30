@@ -8,6 +8,13 @@ export const successInfos = (data) => {
   }
 }
 
+export const successDailySummary = (data) => {
+  return {
+    type: constants.SEARCH_ENGINE_DAILY_SUMMARY_LOADED,
+    payload: data
+  }
+}
+
 export const fail = (data) => {
   return {
     type: constants.SEARCH_ENGINE_FAIL,
@@ -18,5 +25,12 @@ export const fail = (data) => {
 export const loadRankInfos = (file) => dispatch => {
   return searchEngineApi.infos()
     .then(response => dispatch(successInfos(response.data)))
+    .catch(error => dispatch(fail(error)))
+}
+
+export const loadDailyRankSummary = (dateStart, dateEnd) => dispatch => {
+  console.log("loadDailyRankSummary")
+  return searchEngineApi.loadDailyRankSummary(dateStart, dateEnd)
+    .then(response => dispatch(successDailySummary(response.data)))
     .catch(error => dispatch(fail(error)))
 }

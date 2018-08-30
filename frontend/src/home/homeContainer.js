@@ -9,7 +9,7 @@ import {
 
 const mapStateToProps = (state) => {
   return {
-    rankProcesInfos: state.searchEngine.infos
+    rankProcessInfos: state.searchEngine.infos
   }
 }
 

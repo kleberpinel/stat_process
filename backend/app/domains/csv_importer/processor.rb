@@ -22,24 +22,20 @@ module CsvImporter
       },
     }
 
-    attr_reader :file_path, :sites, :search_engines, :site
+    attr_reader :file_path, :search_engines, :site
     def initialize(file_path)
       @file_path = file_path
-      @sites = []
       @search_engines = generate_default_search_engines
     end
 
     def call
       quote_chars = %w(" | ~ ^ & *)
-      count = 0
       begin
         ::CSV.foreach(file_path, encoding: 'UTF-16LE', headers: :first_row, quote_char: quote_chars.shift) do |row|
           row_item = row[0].split("\t")
 
-          @site = save_site(row_item)
+          @site = Site.find_or_create_by(name: row_item[1])
           save_rank_search_engine(row_item)
-
-          count = count + 1
         end
       rescue CSV::MalformedCSVError
         quote_chars.empty? ? raise : retry
@@ -47,17 +43,6 @@ module CsvImporter
     end
 
     private
-
-    def save_site(row_item)
-      # if (!sites.include?(row_item[1]))
-        site = Site.find_or_create_by(name: row_item[1])
-      #   sites << row_item[1]
-      # end
-      # if (site && row_item[1] != site.name)
-      #   site = Site.where(name: row_item[1]).first
-      # end
-      # site
-    end
 
     def save_rank_search_engine(row_item)
       save_rank(row_item, 'Google')
@@ -82,7 +67,7 @@ module CsvImporter
         advertiser_competition:    row_item[13],
         global_monthly_searches:   row_item[14],
         regional_monthly_searches: row_item[15],
-        cpc:            row_item[16],
+        cpc:               row_item[16],
         search_engine_id:  search_engine.id,
         site_id:           site.id
       }
@@ -91,10 +76,14 @@ module CsvImporter
     end
 
     def generate_default_search_engines
-      { 'Google':      SearchEngine.find_or_create_by!(name: 'Google',      url: 'https://www.google.ca'),
-        'Google Base': SearchEngine.find_or_create_by!(name: 'Google Base', url: 'https://www.google.ca'),
-        'Yahoo':       SearchEngine.find_or_create_by!(name: 'Yahoo',       url: 'https://ca.search.yahoo.com'),
-        'Bing':        SearchEngine.find_or_create_by!(name: 'Bing',        url: 'https://www.bing.com')  }
+      { 'Google':      SearchEngine.find_or_create_by!(name: 'Google',
+                                                       url: 'https://www.google.ca'),
+        'Google Base': SearchEngine.find_or_create_by!(name: 'Google Base',
+                                                       url: 'https://www.google.ca'),
+        'Yahoo':       SearchEngine.find_or_create_by!(name: 'Yahoo',
+                                                       url: 'https://ca.search.yahoo.com'),
+        'Bing':        SearchEngine.find_or_create_by!(name: 'Bing',
+                                                       url: 'https://www.bing.com')  }
     end
   end
 end
